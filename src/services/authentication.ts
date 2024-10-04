@@ -16,13 +16,18 @@ export default class Authentication {
             const isUsernamePresent = this.defaultUser.find((user) => user.username === username);
             if(!isUsernamePresent) {
                 console.log('Invalid Username');
-                throw('Invalid Username');
+                res.send({
+                    status: 401,
+                    Message: 'Invalid Username'
+                });
             }
 
             const isPasswordMatch = bcrypt.compare(password, this.defaultUser[0].password);
             if (!isPasswordMatch) {
-                console.log('Invalid Credential');
-                throw('Invalid Credential');
+                res.send({
+                    status: 401,
+                    Message: 'Invalid Password'
+                });
             }
 
             const token = Jwt.sign({id: this.defaultUser[0].userId, username: this.defaultUser[0].username}, this.secretKey)
