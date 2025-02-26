@@ -4,13 +4,14 @@ import session from 'express-session';
 import path from 'path';
 import dotenv from 'dotenv';
 import Routes from "./routes";
+import logger from "./utils/logger";
 
 dotenv.config();
 
 mongoose.connect('mongodb://localhost:27017/user_registration', {
     serverSelectionTimeoutMS: 20000})
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log(err));
+    .then(() => logger.info('MongoDB connected'))
+    .catch(err => logger.error(err));
 
 const app = express();
 const port = 3000;
@@ -30,4 +31,4 @@ app.use(session({
 
 new Routes(app);
 
-app.listen(port, () => console.log(`service running in port: ${port}`));
+app.listen(port, () => logger.info(`service running in port: ${port}`));

@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs"
 import bodyParser from "body-parser";
 import authentication from './services/authentication';
 import Users from "./models/Users";
+import logger from "./utils/logger";
 
 export default class Routes {
     auth: authentication;
@@ -26,7 +27,8 @@ export default class Routes {
         ], async (req: Request, res: Response) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.render('register', { errors: errors.array() });
+                res.status(400).json({ errors: errors.array() });
+                return;
             }
             const { username, email, password } = req.body;
 
@@ -42,7 +44,7 @@ export default class Routes {
 
                 res.send('New User Created');
             } catch (err) {
-                console.error(err);
+                logger.error(err);
                 res.status(500).send('Server error');
             }
             res.send({
