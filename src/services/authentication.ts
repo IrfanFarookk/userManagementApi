@@ -12,7 +12,6 @@ export default class Authentication {
 
     public login = async (req: Request, res: Response) => {
         const { username, password } = req.body;
-        try {
             const isUsernamePresent = this.defaultUser.find((user) => user.username === username);
             console.log(isUsernamePresent);
             if(!isUsernamePresent) {
@@ -37,10 +36,6 @@ export default class Authentication {
             res.send({
                 Status: 200,
                 AccessToken: token
-            });
-        } catch (error) {
-            throw(error);
-        }
-        
+            }); 
     }
 }
