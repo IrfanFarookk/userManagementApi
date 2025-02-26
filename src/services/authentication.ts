@@ -14,20 +14,23 @@ export default class Authentication {
         const { username, password } = req.body;
         try {
             const isUsernamePresent = this.defaultUser.find((user) => user.username === username);
+            console.log(isUsernamePresent);
             if(!isUsernamePresent) {
                 console.log('Invalid Username');
                 res.send({
                     status: 401,
                     Message: 'Invalid Username'
                 });
+                return;
             }
 
-            const isPasswordMatch = bcrypt.compare(password, this.defaultUser[0].password);
+            const isPasswordMatch = await bcrypt.compare(password, this.defaultUser[0].password);
             if (!isPasswordMatch) {
                 res.send({
                     status: 401,
                     Message: 'Invalid Password'
                 });
+                return;
             }
 
             const token = Jwt.sign({id: this.defaultUser[0].userId, username: this.defaultUser[0].username}, this.secretKey)
@@ -36,7 +39,7 @@ export default class Authentication {
                 AccessToken: token
             });
         } catch (error) {
-            console.error(error);
+            throw(error);
         }
         
     }
