@@ -13,9 +13,7 @@ export default class Authentication {
     public login = async (req: Request, res: Response) => {
         const { username, password } = req.body;
             const isUsernamePresent = this.defaultUser.find((user) => user.username === username);
-            console.log(isUsernamePresent);
             if(!isUsernamePresent) {
-                console.log('Invalid Username');
                 res.send({
                     status: 401,
                     Message: 'Invalid Username'
